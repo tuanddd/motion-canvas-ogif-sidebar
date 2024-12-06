@@ -1,31 +1,16 @@
-import {
-  CODE,
-  Code,
-  Img,
-  Rect,
-  Txt,
-  lines,
-  makeScene2D,
-} from "@motion-canvas/2d";
+import { Code, Img, Rect, Txt, makeScene2D } from "@motion-canvas/2d";
 import MdCode from "../mdcode";
-import {
-  DEFAULT,
-  JumpSpring,
-  all,
-  beginSlide,
-  chain,
-  createRef,
-  sequence,
-  spring,
-  waitFor,
-} from "@motion-canvas/core";
-import JsCode from "../jscode";
+import { all, beginSlide, chain, createRef } from "@motion-canvas/core";
 import HtmlCode from "../htmlcode";
-import approach2img from "../approach2.png";
-import approach2_2img from "../approach2_2.png";
 import gem from "../gem.png";
 import tree from "../tree.png";
 import dfCute from "../df-cute.png";
+import deluxe from "../deluxe.png";
+import premium from "../premium.png";
+import room from "../room.png";
+import teams from "../teams.png";
+import activities from "../activities.png";
+import food from "../food.png";
 
 function pause(count: number) {
   return beginSlide("ogif" + count);
@@ -33,15 +18,38 @@ function pause(count: number) {
 
 export default makeScene2D(function* (view) {
   const stickerRef = createRef<Img>();
-  view.add(<Img src={dfCute} ref={stickerRef} />);
+  const titleRef = createRef<Rect>();
+  view.add(
+    <Img src={dfCute} ref={stickerRef} position={[0, -120]} width={650} />
+  );
   view.add(
     <Img opacity={0.125} src={tree} position={[750, 200]} width={600} />
   );
   view.add(
-    <Rect layout alignItems="center" columnGap={10} position={[870, 510]}>
+    <Rect
+      layout
+      direction="column"
+      alignItems="center"
+      columnGap={10}
+      position={[0, 170]}
+      ref={titleRef}
+    >
+      <Txt fill="#cecece" fontSize={50}>
+        Company Trip
+      </Txt>
+      <Txt fill="#cecece" fontSize={70}>
+        Penang
+      </Txt>
+      <Txt fill="#cecece" fontSize={40}>
+        14 - 17 Dec
+      </Txt>
+    </Rect>
+  );
+  view.add(
+    <Rect layout alignItems="center" columnGap={10} position={[840, -490]}>
       <Img src={gem} width={40} opacity={0.7} />
       <Txt fill="#cecece" fontSize={24}>
-        OGIF #4
+        Company Trip
       </Txt>
     </Rect>
   );
@@ -56,38 +64,26 @@ export default makeScene2D(function* (view) {
     /* spring(JumpSpring, 1, 0.9, (scale) => stickerRef().scale(scale)), */
     /* spring(JumpSpring, 0.9, 1.1, (scale) => stickerRef().scale(scale)), */
     /* spring(JumpSpring, 0, 5, (rotate) => stickerRef().rotation(rotate)), */
-    stickerRef().opacity(0, 0.25)
+    stickerRef().opacity(0, 0.25),
+    titleRef().opacity(0, 0.25)
   );
 
   yield* toc().code(
     `\
-- [ ] What`,
+[ ] Flight
+[ ] Hotels
+[ ] Activities
+[ ] Food / Cuisine
+[ ] Tips & tricks
+[ ] QnA`,
     0.5
   );
 
-  yield* pause(count);
-
-  yield* toc().code(
-    `\
-- [ ] What
-- [ ] How`,
-    0.5
-  );
-
-  yield* pause(count);
-
-  yield* toc().code(
-    `\
-- [ ] What
-- [ ] How
-- [ ] QnA`,
-    0.5
-  );
   count++;
 
   yield* pause(count);
   yield* all(
-    toc().code("[ ] What", 0.5),
+    toc().code("[ ] Flight", 0.5),
     toc().position([-800, -450], 0.75),
     toc().fontSize(48, 0.75)
   );
@@ -99,565 +95,314 @@ export default makeScene2D(function* (view) {
   yield* pause(count);
   yield* chain(
     problems().code.append(
-      "- Given a data and its structure, render a sidebar",
+      `AirAsia
+Departure: Dec 14, 13:35
+AK-1503`,
       0.75
     ),
     pause(count),
-    problems().code.append("\n- Level of nesting is dynamic", 0.5)
-  );
-
-  yield* pause(count);
-  yield* problems().selection(
-    problems().findAllRanges(
-      "- Given a data and its structure, render a sidebar"
-    ),
-    0.5
+    problems().code.append(
+      `\n---------\nReturn: Dec 17, 12:15
+AK-1502`,
+      0.5
+    )
   );
 
   yield* all(
-    problems().code("- Given a data and its structure, render a sidebar", 0.5),
+    problems().code("- 7kg cabin baggage", 0.5),
     pause(count),
-    problems().position.y(-300, 0.5)
+    problems().position.y(0, 0.5)
   );
 
-  const dataShape = createRef<Code>();
-
-  view.add(
-    <JsCode
-      ref={dataShape}
-      code={CODE``}
-      fontSize={42}
-      position={[-350, 150]}
-    />
+  yield* all(
+    problems().code.append("\n- 20kg checked baggage\n(per pax)", 0.5),
+    pause(count)
   );
 
-  const fileName = Code.createSignal(CODE`File`);
-  const dataName = Code.createSignal(CODE`Data`);
-  const keyName = Code.createSignal(CODE`key`);
-
-  yield* dataShape().code(
-    CODE`\
-type ${dataName} {
-  file_paths: Array<${fileName}>
-  next_path: {
-    [${keyName}: string]: ${dataName}
-  }
-}
-
-type ${fileName} {
-  // "/changelog/2-ogif-office-hours-0412"
-  file_path: string 
-
-  // "OGIF Office Hours #2: Devbox..."
-  title: string 
-}`,
-    0.5
+  yield* all(
+    problems().code("- Non-HCM peeps self book flight from/to HCM", 0.5),
+    pause(count),
+    problems().position.y(0, 0.5)
   );
 
-  yield* pause(count);
-  yield* dataShape().selection(dataShape().findFirstRange("Array<File>"), 0.5);
-  yield* pause(count);
-  yield* dataShape().selection(lines(6, 13), 0.5);
-
-  yield* pause(count);
-  yield* fileName("ListItem", 0.5);
-  yield* pause(count);
-
-  yield* sequence(
-    1,
-    dataShape().selection(DEFAULT, 0.5),
-    dataShape().selection(lines(2, 4), 0.5)
+  yield* all(
+    problems().code.append(
+      "\n- Make an reimbursement request in Basecamp",
+      0.5
+    ),
+    pause(count),
+    problems().position.y(0, 0.5)
   );
 
-  yield* pause(count);
-
-  yield* sequence(
-    1,
-    all(keyName("subList", 0.5), dataName("List", 0.5)),
-    dataShape().selection(DEFAULT, 0.75)
+  yield* chain(
+    problems().opacity(0, 0.75),
+    all(toc().fontSize(72, 0.75), toc().position([0, 0], 0.75)),
+    toc().code("[ ] Hotels", 0.5)
   );
 
+  count++;
   yield* pause(count);
 
   yield* all(
-    dataShape().opacity(0, 0.5),
-    problems().code.append("\n- Level of nesting is dynamic", 0.5),
-    problems().position([-150, 0], 0.5),
-    problems().selection(DEFAULT, 0.5)
+    toc().code("[ ] Hotels", 0.5),
+    toc().position([-810, -450], 0.75),
+    toc().fontSize(48, 0.75)
   );
+
+  const approach3 = createRef<Code>();
+
+  view.add(<HtmlCode ref={approach3} fontSize={50} />);
+
+  yield* approach3().code(`Hompton By the Beach`, 0.5);
+
+  yield* pause(count);
+
+  const deluxeRef = createRef<Img>();
+  view.add(
+    <Img src={deluxe} ref={deluxeRef} position={[0, -120]} width={650} />
+  );
+  yield* all(
+    approach3().position.x(-600, 0.5),
+    approach3().code.append(`\n- Room for 2 (Deluxe seaview room)`, 0.5),
+    all(deluxeRef().opacity(1, 0.25), deluxeRef().position([500, 0], 0.5))
+  );
+
+  yield* pause(count);
+
+  const premiumRef = createRef<Img>();
+  view.add(
+    <Img src={premium} ref={premiumRef} position={[0, -120]} width={650} />
+  );
+
+  yield* all(
+    deluxeRef().opacity(0, 0.25),
+    approach3().position.x(-600, 0.5),
+    approach3().code(
+      `Hompton By the Beach\n- Room for 4 (Premium supreme suite)`,
+      0.5
+    ),
+    all(premiumRef().opacity(1, 0.25), premiumRef().position([600, 0], 0.5))
+  );
+
+  count++;
+  yield* pause(count);
+
+  yield* all(
+    deluxeRef().opacity(0, 0.5),
+    premiumRef().opacity(0, 0.5),
+    approach3().position.x(-200, 0.5),
+    approach3().code(`- Breakfast`, 0.5)
+  );
+
+  yield* pause(count);
+
+  yield* approach3().code.append("\n- Transport from/to airport", 0.5);
+
+  yield* pause(count);
+
+  const roomRef = createRef<Img>();
+  view.add(
+    <Img src={room} ref={roomRef} position={[0, 0]} height={800} opacity={0} />
+  );
+  yield* all(approach3().opacity(0, 0.5), roomRef().opacity(1, 0.5));
 
   yield* pause(count);
 
   yield* chain(
-    all(
-      problems().opacity(0, 0.75),
-      toc().code(`- [ ] What`, 0.75),
-      toc().position([0, 0], 0.75),
-      toc().fontSize(72, 0.75)
-    ),
-    toc().code(
-      `- [ ] What
-- [ ] How
-- [ ] QnA`,
-      1
-    ),
-    toc().code(
-      `- [x] What
-- [ ] How
-- [ ] QnA`,
-      0.5
-    )
+    roomRef().opacity(0, 0.75),
+    all(toc().fontSize(72, 0.75), toc().position([0, 0], 0.75)),
+    toc().code("[ ] Activities", 0.5)
   );
 
   count++;
-
   yield* pause(count);
 
   yield* all(
-    toc().code("[ ] How", 0.5),
-    toc().position([-810, -450], 0.75),
+    toc().code("[ ] Activities", 0.5),
+    toc().position([-740, -450], 0.75),
     toc().fontSize(48, 0.75)
   );
-  /**/
-  /*   const approaches = createRef<Code>(); */
-  /*   view.add(<MdCode ref={approaches} fontSize={86} />); */
-  /**/
-  /*   yield* approaches().code( */
-  /*     `\ */
-  /* - ❓ */
-  /* - ❓ */
-  /* - ❓`, */
-  /*     0.5 */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* approaches().code( */
-  /*     `\ */
-  /* - 🤔 alpine-component */
-  /* - ❓ */
-  /* - ❓`, */
-  /*     0.5 */
-  /*   ); */
-  /**/
-  /*   count++; */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* approaches().opacity(0, 0.25); */
-  /**/
-  /*   const approach1 = createRef<Code>(); */
-  /**/
-  /*   view.add(<HtmlCode ref={approach1} fontSize={50} />); */
-  /**/
-  /*   yield* approach1().code( */
-  /*     ` */
-  /* <template id="person"> */
-  /*   ...content */
-  /* </template> */
-  /**/
-  /* <template x-for="person in people"> */
-  /**/
-  /*     <x-component  */
-  /*       template="person"  */
-  /*       x-data="{ item: person }"> */
-  /*     </x-component> */
-  /**/
-  /* </template>`, */
-  /*     0.5 */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* approach1().selection(lines(1, 3), 0.25); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* approach1().selection(lines(4, 12), 0.5); */
-  /**/
-  /*   yield* waitFor(0.5); */
-  /**/
-  /*   yield* approach1().selection(lines(6, 10), 0.5); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* chain(approach1().opacity(0, 0.25), approaches().opacity(1, 0.25)); */
-  /**/
-  /*   approach1().remove(); */
-  /**/
-  /*   yield* approaches().code( */
-  /*     `\ */
-  /* - ❌ alpine-component */
-  /* - ❓ */
-  /* - ❓`, */
-  /*     0.5 */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* all( */
-  /*     approaches().code( */
-  /*       `\ */
-  /* - ❌ alpine-component */
-  /* - 🤔 javascript */
-  /* - ❓`, */
-  /*       0.5 */
-  /*     ), */
-  /*     approaches().selection(lines(1), 0.5) */
-  /*   ); */
-  /**/
-  /*   count++; */
-  /**/
-  /*   const approach2imgRef = createRef<Img>(); */
-  /*   const approach2_2imgRef = createRef<Img>(); */
-  /**/
-  /*   view.add( */
-  /*     <Img */
-  /*       ref={approach2imgRef} */
-  /*       src={approach2img} */
-  /*       opacity={0} */
-  /*       scale={2} */
-  /*       position={[200, 0]} */
-  /*     /> */
-  /*   ); */
-  /**/
-  /*   view.add( */
-  /*     <Img */
-  /*       ref={approach2_2imgRef} */
-  /*       src={approach2_2img} */
-  /*       opacity={0} */
-  /*       scale={0.65} */
-  /*       position={[-200, 50]} */
-  /*     /> */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* chain( */
-  /*     approaches().opacity(0, 0.25), */
-  /*     all( */
-  /*       approach2_2imgRef().opacity(1, 0.25), */
-  /*       approach2_2imgRef().position.x(-400, 0.25) */
-  /*     ) */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* all( */
-  /*     approach2imgRef().opacity(1, 0.25), */
-  /*     approach2imgRef().position.x(400, 0.25) */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   approaches().selection(DEFAULT); */
-  /**/
-  /*   yield* chain( */
-  /*     all( */
-  /*       approach2imgRef().opacity(0, 0.25), */
-  /*       approach2_2imgRef().opacity(0, 0.25) */
-  /*     ), */
-  /*     approaches().opacity(1, 0.25) */
-  /*   ); */
-  /**/
-  /*   approach2imgRef().remove(); */
-  /*   approach2_2imgRef().remove(); */
-  /**/
-  /*   yield* approaches().code( */
-  /*     `\ */
-  /* - ❌ alpine-component */
-  /* - ❌ javascript */
-  /* - ❓`, */
-  /*     0.5 */
-  /*   ); */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* all( */
-  /*     approaches().code( */
-  /*       `\ */
-  /* - ❌ alpine-component */
-  /* - ❌ javascript */
-  /* - 🤔 x-html`, */
-  /*       0.5 */
-  /*     ), */
-  /*     approaches().selection(lines(2), 0.5) */
-  /*   ); */
-  /**/
-  /*   count++; */
-  /**/
-  /*   yield* pause(count); */
-  /**/
-  /*   yield* approaches().opacity(0, 0.25); */
 
-  const approach3 = createRef<Code>();
+  const approach4 = createRef<Code>();
 
-  view.add(<HtmlCode ref={approach3} fontSize={30} />);
+  view.add(<HtmlCode ref={approach4} fontSize={50} />);
 
-  yield* approach3().code(
-    `\
-<template 
-  x-data="{ 
-    foo() { 
-      return '<span>bar</span>'
-    } 
-  }"
->
-</template>`,
+  yield* approach4().code(
+    `- There is NO "company" activity this year\n- Purely retreat for the team\n- One itinerary can't suit everyone`,
     0.5
   );
 
   yield* pause(count);
 
-  yield* approach3().code(
-    `\
-<template 
-  x-data="{ 
-    foo() { 
-      return '<span>bar</span>'
-    } 
-  }"
-  x-html="foo()"
->
-</template>`,
-    0.5
+  const teamsRef = createRef<Img>();
+
+  view.add(
+    <Img
+      src={teams}
+      ref={teamsRef}
+      position={[0, 0]}
+      height={800}
+      opacity={0}
+    />
   );
+  yield* approach4().code(`Split into smaller teams`, 0.5);
+
+  yield* chain(approach4().position.y(480, 0.5), teamsRef().opacity(1, 0.5));
 
   yield* pause(count);
-
-  yield* approach3().code(
-    `\
-<template 
-  x-data="{ 
-    foo() { 
-      return '<span>bar</span>'
-    } 
-  }"
-  x-html="foo()"
->
-  <span>bar</span>
-</template>`,
-    0.5
+  yield* all(
+    approach4().position.y(0, 0.5),
+    approach4().opacity(0, 0.5),
+    teamsRef().opacity(0, 0.5)
   );
 
-  yield* pause(count);
+  //slide 9
+  const activitiesRef = createRef<Img>();
 
-  yield* approach3().code(
-    `\
-<template 
-  x-data="{ 
-    foo() { 
-      return '<span>bar</span>'
-    } 
-  }"
-  x-html="foo()"
->
-</template>`,
-    0.5
+  view.add(
+    <Img
+      src={activities}
+      ref={activitiesRef}
+      position={[500, 0]}
+      height={1000}
+      opacity={0}
+    />
   );
-
-  yield* pause(count);
-
-  yield* approach3().code(
-    `\
-<template 
-  x-data="{ 
-    foo() { 
-      return '<span x-html='foo()'>bar</span>'
-    } 
-  }"
-  x-html="foo()"
->
-</template>`,
-    0.5
-  );
-
-  yield* pause(count);
-
-  yield* approach3().code(
-    `\
-<details>
-  <summary>Home</summary>
-</details>`,
-    0.5
-  );
-
-  yield* pause(count);
-
-  yield* approach3().code(
-    `\
-<details>
-  <summary>Home</summary>
-  <template x-data="..." x-for="(menu, value) in sidebarItems">
-    <details x-html="render(menu, value)"></details>
-  </template>
-</details>`,
-    0.5
-  );
-
-  yield* pause(count);
-
-  const approach3_js = createRef<Code>();
-  view.add(<JsCode ref={approach3_js} fontSize={30} />);
 
   yield* all(
-    approach3().opacity(0, 0.25),
-    approach3_js().code(
-      `\
-function render(menu, value) {
-}`,
+    approach4().opacity(1, 0.5),
+    approach4().position.x(-400, 0.5),
+    approach4().code(
+      `- Pick your favorites activity,\n  Ops team will handle the tickets\n  for you`,
+      0.5
+    ),
+    activitiesRef().opacity(1, 0.5)
+  );
+
+  yield* pause(count);
+  yield* activitiesRef().opacity(0, 0.5);
+
+  // slide 10
+  yield* all(
+    approach4().opacity(1, 0.5),
+    approach4().position.x(0, 0.5),
+    approach4().code(`- Ops team will post a registration form next week`, 0.5)
+  );
+
+  yield* pause(count);
+
+  yield* approach4().opacity(0, 0.5);
+
+  // slide 11
+
+  yield* chain(
+    problems().opacity(0, 0.75),
+    all(toc().fontSize(72, 0.75), toc().position([0, 0], 0.75)),
+    toc().code("[ ] Food / Cuisine", 0.5)
+  );
+
+  count++;
+  yield* pause(count);
+
+  yield* all(
+    toc().code("[ ] Food / Cuisine", 0.5),
+    toc().position([-690, -450], 0.75),
+    toc().fontSize(48, 0.75)
+  );
+
+  const approach5 = createRef<Code>();
+
+  view.add(<HtmlCode ref={approach5} fontSize={50} />);
+
+  const foodRef = createRef<Img>();
+
+  view.add(
+    <Img
+      src={food}
+      ref={foodRef}
+      position={[500, 0]}
+      height={1000}
+      opacity={0}
+    />
+  );
+
+  yield* all(
+    approach5().position.x(-520, 0.5),
+    approach5().code(
+      `- Claim your expense at\n  the end of the company trip`,
+      0.5
+    ),
+    foodRef().opacity(1, 0.5)
+  );
+
+  yield* pause(count);
+
+  yield* all(approach5().opacity(0, 0.5), foodRef().opacity(0, 0.5));
+
+  yield* chain(
+    roomRef().opacity(0, 0.75),
+    all(toc().fontSize(72, 0.75), toc().position([0, 0], 0.75)),
+    toc().code("[ ] Tips & tricks", 0.5)
+  );
+
+  count++;
+  yield* pause(count);
+
+  yield* all(
+    toc().code("[ ] Tips & tricks", 0.5),
+    toc().position([-700, -450], 0.75),
+    toc().fontSize(48, 0.75)
+  );
+
+  const approach6 = createRef<Code>();
+
+  view.add(<HtmlCode ref={approach6} fontSize={50} />);
+
+  yield* all(
+    approach6().position.x(-450, 0.5),
+    approach6().code(
+      `- BRING YOUR PASSPORT, please\n- New passport with chip can use autogate when return`,
       0.5
     )
   );
 
   yield* pause(count);
 
-  yield* approach3_js().code(
-    `\
-function render(menu, value) {
-  let html = \`<summary>\${menu}</summary>\`
-}`,
-    0.25
-  );
-
-  yield* pause(count);
-
-  yield* approach3_js().code(
-    `\
-function render(menu, value) {
-  let html = \`<summary>\${menu}</summary>\`
-  const hasChildList = Object.keys(value.next_path).length > 0
-}`,
-    0.25
-  );
-
-  yield* pause(count);
-
-  yield* approach3_js().code(
-    `\
-function render(menu, value) {
-  let html = \`<summary>\${menu}</summary>\`
-  const hasChildList = Object.keys(value.next_path).length > 0
-  const hasFilePaths = value.file_paths.length > 0
-}`,
-    0.25
-  );
-
-  yield* pause(count);
-
-  yield* approach3_js().code(
-    `\
-function render(menu, value) {
-  const hasChildList = Object.keys(value.next_path).length > 0
-  const hasFilePaths = value.file_paths.length > 0
-
-  if(hasChildList) html += \`
-    <template x-for="(cMenu, cValue) in value.next_path">
-      <details x-html="render(cMenu, cValue)"></details>
-    </template>\`
-}`,
-    0.25
-  );
-
-  yield* pause(count);
-
-  yield* approach3_js().code(
-    `\
-function render(menu, value) {
-  const hasFilePaths = value.file_paths.length > 0
-
-  if(hasChildList) html += \`
-    <template x-for="(cMenu, cValue) in value.next_path">
-      <details x-html="render(cMenu, cValue)"></details>
-    </template>\`
-
-  if(hasFilePaths) html += \`
-    <ul>
-      <li>...</li>
-      <li>...</li>
-    </ul>\`
-}`,
-    0.25
-  );
-
-  yield* pause(count);
-
-  yield* approach3_js().code(
-    `\
-function render(menu, value) {
-  if(hasChildList) html += \`
-    <template x-for="(cMenu, cValue) in value.next_path">
-      <details x-html="render(cMenu, cValue)"></details>
-    </template>\`
-
-  if(hasFilePaths) html += \`
-    <ul>
-      <li>...</li>
-      <li>...</li>
-    </ul>\`
-
-  return html
-}`,
-    0.25
-  );
-
-  yield* pause(count);
-
-  yield* approach3_js().selection(lines(1, 5), 0.25);
-
-  yield* pause(count);
-
-  yield* approach3_js().selection(lines(6, 10), 0.25);
-
-  yield* pause(count);
-
-  yield* sequence(
-    0.75,
-    approach3_js().selection(DEFAULT, 0.25),
-    approach3_js().opacity(0, 0.25),
-    approach3().opacity(1, 0.25),
-    approach3().opacity(0, 0.25)
-    /* approaches().opacity(1, 0.25) */
-  );
-
-  /*   yield* approaches().code( */
-  /*     `\ */
-  /* - ❌ alpine-component */
-  /* - ❌ javascript */
-  /* - ✅ x-html`, */
-  /*     0.5 */
-  /*   ); */
-
-  count++;
-
-  yield* pause(count);
-
   yield* all(
-    /* approaches().opacity(0, 0.25), */
-    chain(
-      all(toc().position([0, 0], 0.75), toc().fontSize(72, 0.75)),
-      toc().code(
-        `- [x] What
-- [ ] How
-- [ ] QnA`,
-        1
-      ),
-      toc().code(
-        `- [x] What
-- [x] How
-- [ ] QnA`,
-        0.5
-      )
+    approach6().code(
+      `- Buy your esim\n- Scan QR to activate, no need for physical sim`,
+      0.5
     )
   );
 
   yield* pause(count);
 
   yield* all(
-    toc().code("[ ] QnA", 0.5),
-    toc().position([-800, -450], 0.75),
-    toc().fontSize(48, 0.75)
+    approach6().code(
+      `- Exchange some $$\n- Can do it in airport, recommend 3-5M VND`,
+      0.5
+    )
   );
 
+  yield* pause(count);
+
+  yield* all(
+    approach6().code(
+      `- Weather: 22° - 28° C\n- Low amount of rain, but recommend to bring umbrella`,
+      0.5
+    )
+  );
+
+  yield* pause(count);
+
+  yield* all(approach6().opacity(0, 0.5));
+
+  yield* chain(
+    roomRef().opacity(0, 0.75),
+    all(toc().fontSize(72, 0.75), toc().position([0, 0], 0.75)),
+    toc().code("[ ] QnA", 0.5)
+  );
+
+  count++;
   yield* pause(count);
 });
